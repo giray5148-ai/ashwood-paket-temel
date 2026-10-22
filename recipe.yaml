@@ -1,0 +1,119 @@
+$engine: 4
+$lite: true
+name: "Ashwood - Qbox Base (txAdmin Recipe)"
+version: 1.0.0
+author: "Qbox Project & LA Reality Concept"
+description: "Qbox Framework, Overextended (OX) sistemleri ve temel gerçekçilik scriptlerini içeren otomatik txAdmin kurulum."
+
+tasks:
+  # 1. TEMEL CFX KAYNAKLARI (Default Resources)
+  - action: download_github
+    src: https://github.com/citizenfx/cfx-server-data
+    ref: master
+    dest: ./resources/[cfx-default]
+
+  # 2. VERİTABANI: OXMYSQL
+  - action: download_github
+    src: https://github.com/overextended/oxmysql
+    ref: main
+    dest: ./resources/[standalone]/oxmysql
+
+  # 3. OVEREXTENDED (OX) KÜTÜPHANELERİ
+  # ox_lib (Latest Release)
+  - action: download_github
+    src: https://github.com/overextended/ox_lib
+    ref: main
+    dest: ./resources/[standalone]/ox_lib
+
+  # ox_target (Göz / Hedefleme Sistemi)
+  - action: download_github
+    src: https://github.com/overextended/ox_target
+    ref: main
+    dest: ./resources/[standalone]/ox_target
+
+  # ox_inventory (Gerçekçi Envanter)
+  - action: download_github
+    src: https://github.com/overextended/ox_inventory
+    ref: main
+    dest: ./resources/[standalone]/ox_inventory
+
+  # 4. ANA FRAMEWORK: QBOX (qbx_core)
+  - action: download_github
+    src: https://github.com/Qbox-project/qbx_core
+    ref: main
+    dest: ./resources/[qbox]/qbx_core
+
+  # 5. QBOX TEMEL MODÜLLERİ (Management, Spawn, Cityhall)
+  - action: download_github
+    src: https://github.com/Qbox-project/qbx_management
+    ref: main
+    dest: ./resources/[qbox]/qbx_management
+
+  - action: download_github
+    src: https://github.com/Qbox-project/qbx_spawn
+    ref: main
+    dest: ./resources/[qbox]/qbx_spawn
+
+  - action: download_github
+    src: https://github.com/Qbox-project/qbx_vehicles
+    ref: main
+    dest: ./resources/[qbox]/qbx_vehicles
+
+  # 6. RENEWED SİSTEMLERİ (Ekonomi ve Araç Anahtarları)
+  - action: download_github
+    src: https://github.com/Renewed-Scripts/Renewed-Banking
+    ref: main
+    dest: ./resources/[standalone]/Renewed-Banking
+
+  - action: download_github
+    src: https://github.com/Renewed-Scripts/Renewed-Vehiclekeys
+    ref: main
+    dest: ./resources/[standalone]/Renewed-Vehiclekeys
+
+  # 7. SERVER.CFG OLUŞTURMA (Hiyerarşik Başlatma Sırası)
+  - action: write_file
+    file: ./server.cfg
+    data: |
+      endpoint_add_tcp "0.0.0.0:30120"
+      endpoint_add_udp "0.0.0.0:30120"
+      
+      set mysql_connection_string "mysql://root@localhost/qbox_reality?charset=utf8mb4"
+      
+      # Core & Dependencies
+      ensure mapmanager
+      ensure chat
+      ensure spawnmanager
+      ensure sessionmanager
+      ensure basic-gamemode
+      ensure hardcap
+      
+      # Overextended & Database
+      ensure oxmysql
+      ensure ox_lib
+      
+      # Target & Inventory
+      ensure ox_target
+      ensure ox_inventory
+      
+      # Framework
+      ensure qbx_core
+      
+      # Qbox Modules
+      ensure qbx_management
+      ensure qbx_spawn
+      ensure qbx_vehicles
+      
+      # Renewed Modules
+      ensure Renewed-Banking
+      ensure Renewed-Vehiclekeys
+      
+      # Sunucu Ayarları
+      sv_hostname "Ashwood | Qbox | Realistic Economy"
+      sets sv_projectName "Ashwood Los Angeles Concept"
+      sets sv_projectDesc "Gerçekçi Los Angeles konseptli Hard RP sunucusu."
+      sets tags "default, deployer, qbox, roleplay, realistic, economy, lapd"
+      sets locale "tr-TR" 
+      
+      sv_maxclients 48
+      set steam_webApiKey "STEAM_API_KEY_BURAYA"
+      sv_licenseKey "FIVEM_LICENSE_KEY_BURAYA"
