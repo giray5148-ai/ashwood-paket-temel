@@ -2,7 +2,7 @@ $engine: 4
 $lite: true
 name: "Ashwood - Qbox Base (txAdmin Recipe)"
 version: 1.0.0
-author: "Qbox Project & LA Reality Concept"
+author: "Niemcy"
 description: "Qbox Framework, Overextended (OX) sistemleri ve temel gerçekçilik scriptlerini içeren otomatik txAdmin kurulum."
 
 tasks:
